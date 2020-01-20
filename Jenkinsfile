@@ -11,7 +11,7 @@ pipeline {
         }
         stage('DockerHub Push'){
             steps{
-                withCredentials([string(credentialsId: 'Docker-Hub-Credentials', variable: 'Gudesaikiran1!')]) {
+                withCredentials([string(credentialsId: 'docker-hub', variable: 'Gudesaikiran1!')]) {
                     sh "docker login"
                     sh "docker tag saikirangude-nodeapp:2.0 saikirangude/nodejs-in-centos:2.0"
                     sh "docker push saikirangude/nodejs-in-centos:2.0"
