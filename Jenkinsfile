@@ -6,22 +6,22 @@ pipeline {
     stages{
         stage('Build Docker Image'){
             steps{
-                sh "docker build . -t saikirangude-nodeapp:${DOCKER_TAG} "
+                sh "docker build . -t saikirangude-nodeapp:2.0 "
             }
         }
         stage('DockerHub Push'){
             steps{
                 withCredentials([string(credentialsId: 'Docker-Hub-Credentials', variable: 'Gudesaikiran1!')]) {
                     sh "docker login -u saikirangude -p Gudesaikiran1!"
-                    sh "docker tag saikirangude-nodeapp:${DOCKER_TAG} saikirangude/nodejs-in-centos:2.0"
+                    sh "docker tag saikirangude-nodeapp:2.0 saikirangude/nodejs-in-centos:2.0"
                     sh "docker push saikirangude/nodejs-in-centos:2.0"
                 }
             }
         }
         stage('Deploy to k8s'){
             steps{
-                sh "chmod +x changeTag.sh"
-                sh "./changeTag.sh ${DOCKER_TAG}"
+                //sh "chmod +x changeTag.sh"
+                //sh "./changeTag.sh ${DOCKER_TAG}"
                 sshagent(['K8S-Mumbai-Region-Test-Instance-1-Credentials']) {
                     sh "scp -o StrictHostKeyChecking=no services.yml node-app-pod.yml ec2-user@13.232.113.17:/home/ec2-user/"
                     script{
