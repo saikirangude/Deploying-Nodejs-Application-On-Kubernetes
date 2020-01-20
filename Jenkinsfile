@@ -6,14 +6,15 @@ pipeline {
     stages{
         stage('Build Docker Image'){
             steps{
-                sh "docker build . -t saikirangude/nodeapp:${DOCKER_TAG} "
+                sh "docker build . -t saikirangude-nodeapp:${DOCKER_TAG} "
             }
         }
         stage('DockerHub Push'){
             steps{
                 withCredentials([string(credentialsId: 'Docker-Hub-Credentials', variable: 'dockerHubPwd')]) {
                     sh "docker login -u saikirangude -p Gudesaikiran1!"
-                    sh "docker push saikirangude/nodeapp:${DOCKER_TAG}"
+                    sh "docker tag saikirangude-nodeapp:${DOCKER_TAG} saikirangude/nodejs-in-centos:2.0"
+                    sh "docker push saikirangude/nodejs-in-centos:2.0"
                 }
             }
         }
